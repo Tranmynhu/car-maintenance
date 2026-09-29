@@ -1,0 +1,590 @@
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+
+    background-color: #f5f8fc;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #172b4d;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.auth-container {
+    width: 900px;
+    min-height: 560px;
+
+    background-color: white;
+
+    display: flex;
+
+    border: 1px solid #dce5ef;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 30px rgba(31, 55, 85, 0.08);
+}
+
+
+/* =========================
+   LEFT SIDE
+========================= */
+
+.welcome-section {
+    width: 45%;
+
+    background: linear-gradient(
+        180deg,
+        #eaf5ff,
+        #dceefe
+    );
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   WELCOME TEXT
+========================= */
+
+.welcome-content {
+    text-align: center;
+
+    padding: 55px 35px 0;
+}
+
+
+.car-icon {
+    font-size: 40px;
+
+    margin-bottom: 18px;
+}
+
+
+.welcome-content h1 {
+    font-size: 27px;
+
+    line-height: 1.25;
+
+    color: #122a4a;
+
+    margin-bottom: 18px;
+}
+
+
+.welcome-content p {
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    color: #50627a;
+
+    max-width: 280px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================
+   CAR AREA
+========================= */
+
+.car-illustration {
+    height: 210px;
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   ROAD
+========================= */
+
+.road {
+    position: absolute;
+
+    bottom: 25px;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 4px;
+
+    background-color: rgba(91, 120, 150, 0.25);
+}
+
+
+/* Small road lines */
+
+.road::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 2px;
+
+    background: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent 20px,
+        rgba(91, 120, 150, 0.35) 20px,
+        rgba(91, 120, 150, 0.35) 40px
+    );
+}
+
+
+/* =========================
+   MOVING CAR
+========================= */
+
+.car {
+    position: absolute;
+
+    bottom: 30px;
+
+    left: -150px; 
+
+    font-size: 115px; 
+
+    z-index: 2;
+
+    animation: drive 6s linear infinite; 
+
+    animation-direction: reverse;
+}
+
+
+/* =========================
+   CAR DRIVING ANIMATION
+========================= */
+@keyframes drive {
+
+    /* Start outside the left side */
+    0% {
+        left: -150px;
+        transform: translateY(0);
+    }
+
+    /* Enter the screen */
+    15% {
+        left: 10%;
+        transform: translateY(-3px);
+    }
+
+    /* Drive across the screen */
+    50% {
+        left: 50%;
+        transform: translateY(0);
+    }
+
+    /* Continue toward the right */
+    85% {
+        left: 100%;
+        transform: translateY(-3px);
+    }
+
+    /* Completely disappear */
+    100% {
+        left: 120%;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.form-section {
+    width: 55%;
+
+    padding: 45px 50px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================
+   TABS
+========================= */
+
+.tabs {
+    display: flex;
+
+    border-bottom: 1px solid #dfe6ee;
+
+    margin-bottom: 32px;
+}
+
+
+.tab {
+    flex: 1;
+
+    background: none;
+
+    border: none;
+
+    padding: 12px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: #68788e;
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+
+.tab.active {
+    color: #1264d6;
+
+    font-weight: 600;
+}
+
+
+.tab.active::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: -1px;
+
+    left: 10%;
+
+    width: 80%;
+
+    height: 2px;
+
+    background-color: #1264d6;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form {
+    width: 100%;
+    height: 408px;
+}
+
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+
+.input-group label {
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: #334761;
+
+    margin-bottom: 7px;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    height: 44px;
+
+    border: 1px solid #d6e0ea;
+
+    border-radius: 6px;
+
+    padding: 0 13px;
+
+    font-size: 13px;
+
+    color: #172b4d;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+.input-group input:focus {
+    border-color: #2878df;
+
+    box-shadow:
+        0 0 0 3px rgba(40, 120, 223, 0.1);
+}
+
+
+.input-group input::placeholder {
+    color: #9aa9bb;
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password-container {
+    position: relative;
+}
+
+
+.password-container input {
+    padding-right: 45px;
+}
+
+
+.show-password {
+    position: absolute;
+
+    right: 12px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: none;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    opacity: 0.6;
+}
+
+
+/* =========================
+   LOGIN OPTIONS
+========================= */
+
+.login-options {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    font-size: 12px;
+}
+
+
+.remember {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #65758a;
+
+    cursor: pointer;
+}
+
+
+.remember input {
+    accent-color: #1264d6;
+}
+
+
+.forgot-password {
+    color: #1264d6;
+
+    text-decoration: none;
+}
+
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.primary-button {
+    width: 100%;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #126bdc;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.primary-button:hover {
+    background-color: #0d5cbe;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   BOTTOM TEXT
+========================= */
+
+.bottom-text {
+    text-align: center;
+
+    margin-top: 20px;
+
+    font-size: 12px;
+
+    color: #66768b;
+}
+
+
+.link-button {
+    border: none;
+
+    background: none;
+
+    color: #126bdc;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+
+.link-button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden {
+    display: none;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 20px;
+    }
+
+
+    .auth-container {
+        width: 100%;
+
+        max-width: 450px;
+
+        flex-direction: column;
+    }
+
+
+    .welcome-section {
+        width: 100%;
+
+        min-height: 280px;
+    }
+
+
+    .welcome-content {
+        padding: 30px 20px 0;
+    }
+
+
+    .welcome-content h1 {
+        font-size: 23px;
+    }
+
+
+    .welcome-content p {
+        font-size: 12px;
+    }
+
+
+    .car-illustration {
+        height: 100px;
+    }
+
+
+    .car {
+        font-size: 65px;
+
+        bottom: 25px;
+    }
+
+
+    .form-section {
+        width: 100%;
+
+        padding: 30px 25px;
+    }
+}

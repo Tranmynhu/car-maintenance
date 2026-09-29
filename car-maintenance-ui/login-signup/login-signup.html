@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Car Maintenance Tracker</title>
+
+    <link rel="stylesheet" href="login-signup.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <div class="auth-container">
+
+        <!-- =========================
+             LEFT SIDE
+        ========================== -->
+
+        <div class="welcome-section">
+
+            <div class="welcome-content">
+
+                <h1>
+                    Car Maintenance<br>
+                    Tracker
+                </h1>
+
+                <p>
+                    Keep your vehicle in top shape.
+                    Track services, manage appointments,
+                    and never miss a maintenance need.
+                </p>
+
+            </div>
+
+
+            <!-- MOVING CAR -->
+
+            <div class="car-illustration">
+
+                <div class="road"></div>
+
+                <div class="car">
+                    🚙
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             RIGHT SIDE
+        ========================== -->
+
+        <div class="form-section">
+
+            <!-- LOGIN / SIGN UP TABS -->
+
+            <div class="tabs">
+
+                <button
+                    id="loginTab"
+                    class="tab active"
+                    type="button"
+                >
+                    Log In
+                </button>
+
+                <button
+                    id="signupTab"
+                    class="tab"
+                    type="button"
+                >
+                    Sign Up
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 LOGIN FORM
+            ========================== -->
+
+            <form id="loginForm" class="form">
+
+                <div class="input-group">
+
+                    <label for="loginEmail">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <div class="password-container">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('loginPassword', this)"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input type="checkbox">
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <a href="#" class="forgot-password">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Log In
+                </button>
+
+
+                <p class="bottom-text">
+
+                    Don't have an account?
+
+                    <button
+                        type="button"
+                        class="link-button"
+                        onclick="showSignup()"
+                    >
+                        Sign Up
+                    </button>
+
+                </p>
+
+            </form>
+
+
+            <!-- =========================
+                 SIGN UP FORM
+            ========================== -->
+
+            <form
+                id="signupForm"
+                class="form hidden"
+            >
+
+                <div class="input-group">
+
+                    <label for="signupName">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="signupEmail">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="signupPassword">
+                        Password
+                    </label>
+
+                    <div class="password-container">
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword('signupPassword', this)"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="confirmPassword">
+                        Confirm password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Create Account
+                </button>
+
+
+                <p class="bottom-text">
+
+                    Already have an account?
+
+                    <button
+                        type="button"
+                        class="link-button"
+                        onclick="showLogin()"
+                    >
+                        Log In
+                    </button>
+
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="login-signup.js"></script>
+
+</body>
+</html>
