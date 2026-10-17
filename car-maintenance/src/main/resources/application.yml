@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?useSSL=false&serverTimezone=UTC
+    username: postgres
+    password: Tmn_1411
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
