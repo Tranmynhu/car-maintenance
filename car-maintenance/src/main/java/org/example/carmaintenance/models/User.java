@@ -31,6 +31,6 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Car> cars;
 }
