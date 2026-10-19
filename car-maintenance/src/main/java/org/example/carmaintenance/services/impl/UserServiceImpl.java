@@ -1,5 +1,6 @@
 package org.example.carmaintenance.services.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.carmaintenance.dtos.requests.UserLoginRequest;
 import org.example.carmaintenance.dtos.requests.UserSignUpRequest;
 import org.example.carmaintenance.dtos.responses.UserLoginResponse;
@@ -35,7 +36,6 @@ public class UserServiceImpl implements UserService {
 
     private boolean isUserMatched(User user, UserLoginRequest userLoginRequest) {
         boolean isUsernameMatched = user.getUsername().equals(userLoginRequest.username());
-
         boolean isPasswordMatched = user.getPassword().equals(userLoginRequest.password());
 
         return isUsernameMatched && isPasswordMatched;
@@ -43,6 +43,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserSignupResponse signUp(UserSignUpRequest userSignUpRequest) {
-        return null;
+        String username = userSignUpRequest.username();
+        String password = userSignUpRequest.password();
+
+        // validation
+        if (StringUtils.isAnyBlank(username, password)) {
+            throw new RuntimeException("Username and password cannot be blank");
+        }
+
+        // save to database
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        userRepository.save(user);
+
+        return new UserSignupResponse(true, "SignUp Succeeded");
     }
 }
