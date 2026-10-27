@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Maintenance Tracker</title>
+
+    <!-- Connect the CSS file -->
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🚘</span>
+                <h2>Car Maintenance Tracker</h2>
+            </div>
+
+            <nav class="navigation">
+                <button class="nav-item active" data-page="Dashboard">
+                    <span>⌂</span> Dashboard
+                </button>
+
+                <button class="nav-item" data-page="Add Vehicle">
+                    <span>🚗</span> Add Vehicle
+                </button>
+
+                <button class="nav-item" data-page="Service History">
+                    <span>▤</span> Service History
+                </button>
+
+                <button class="nav-item" data-page="Appointments">
+                    <span>▦</span> Appointments
+                </button>
+
+                <button class="nav-item" data-page="Settings">
+                    <span>⚙</span> Settings
+                </button>
+            </nav>
+
+            <button class="logout-button" id="logoutButton">
+                ⇥ Log Out
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Page Header -->
+            <header class="welcome-header">
+                <div>
+                    <h1>Welcome</h1>
+                    <p>Here are your vehicles and upcoming appointments.</p>
+                </div>
+
+                <button class="profile-button" aria-label="User profile">
+                    ♙
+                </button>
+            </header>
+
+            <!-- Vehicles Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>My Vehicles</h2>
+                    <button class="primary-button" id="addVehicleButton">
+                        + Add Vehicle
+                    </button>
+                </div>
+
+                <!-- JavaScript will add vehicle cards here -->
+                <div class="vehicle-list" id="vehicleList"></div>
+            </section>
+
+            <!-- Upcoming Appointments -->
+            <section class="section appointments-section">
+                <div class="section-header">
+                    <h2>Upcoming Appointments</h2>
+                    <button class="text-button" id="viewAllButton">
+                        View All
+                    </button>
+                </div>
+
+                <div class="appointment-card">
+                    <div class="appointment-icon">▦</div>
+
+                    <div class="appointment-details">
+                        <h3>Oil Change</h3>
+                        <p>Apr 30, 2026 · 10:00 AM</p>
+                        <p>Toyota Service Center</p>
+                    </div>
+
+                    <span class="arrow">›</span>
+                </div>
+            </section>
+
+            <p class="status-message" id="statusMessage"
+               aria-live="polite"></p>
+
+        </main>
+    </div>
+
+    <!-- Add Vehicle Dialog -->
+    <dialog id="vehicleDialog">
+        <form id="vehicleForm">
+            <h2>Add a Vehicle</h2>
+
+            <label for="vehicleName">Vehicle Name</label>
+            <input id="vehicleName" type="text"
+                   placeholder="e.g. Honda Civic" required>
+
+            <label for="vehicleYear">Year</label>
+            <input id="vehicleYear" type="number"
+                   min="1886" max="2100"
+                   placeholder="e.g. 2022" required>
+
+            <label for="vehicleColor">Color</label>
+            <input id="vehicleColor" type="text"
+                   placeholder="e.g. Blue" required>
+
+            <label for="vehicleVin">VIN</label>
+            <input id="vehicleVin" type="text"
+                   placeholder="Vehicle identification number" required>
+
+            <div class="dialog-buttons">
+                <button type="button" class="secondary-button"
+                        id="cancelButton">Cancel</button>
+
+                <button type="submit" class="primary-button">
+                    Save Vehicle
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Connect the JavaScript file -->
+    <script src="dashboard.js"></script>
+
+</body>
+</html>

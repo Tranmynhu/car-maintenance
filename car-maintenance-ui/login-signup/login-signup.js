@@ -87,14 +87,14 @@ function togglePassword(inputId, button) {
 
 loginForm.addEventListener(
     "submit",
-    function(event) {
+    async function (event) {
 
         event.preventDefault();
 
 
-        const email =
+        const username =
             document.getElementById(
-                "loginEmail"
+                "loginUsername"
             ).value;
 
 
@@ -104,28 +104,51 @@ loginForm.addEventListener(
             ).value;
 
 
-        if (email === "" || password === "") {
+        if (username === "" || password === "") {
 
             alert(
-                "Please enter your email and password."
+                "Please enter your username and password."
             );
 
             return;
         }
 
 
-        /*
-         * Temporary login behavior.
-         *
-         * Later you can connect this
-         * to your database.
-         */
+        const result = await login(username, password);
+        console.log('Success:', result);
 
-        alert("Login successful!");
-
-        console.log("Email:", email);
+        if (result.isLoginSuccess) {
+            // go to dashboard
+            window.location.href = "/dashboard/dashboard.html";
+        } else {
+            alert("Username or password is incorrect")
+        }
     }
 );
+
+async function login(username, password) {
+    const url = 'http://localhost:8080/api/user/login';
+
+    // 1. Define the data payload you want to send
+    const data = {
+        username,
+        password
+    };
+
+    // 2. Make the HTTP POST request
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Tells the server to expect JSON
+        },
+        body: JSON.stringify(data) // Converts your JS object into a JSON string
+    });
+
+    // 3. Parse and use the server's response
+    const result = await response.json();
+
+    return result;
+}
 
 
 /* =========================
@@ -134,20 +157,14 @@ loginForm.addEventListener(
 
 signupForm.addEventListener(
     "submit",
-    function(event) {
+    async function (event) {
 
         event.preventDefault();
 
 
-        const name =
+        const username =
             document.getElementById(
                 "signupName"
-            ).value;
-
-
-        const email =
-            document.getElementById(
-                "signupEmail"
             ).value;
 
 
@@ -177,23 +194,29 @@ signupForm.addEventListener(
 
         /* Check password length */
 
-        if (password.length < 6) {
+        console.log("Name:", username);
 
-            alert(
-                "Password must be at least 6 characters."
-            );
+        console.log("password:", password);
 
-            return;
-        }
+        const url = 'http://localhost:8080/api/user/signUp';
 
+        // 1. Define the data payload you want to send
+        const data = {
+            username,
+            password
+        };
 
-        alert(
-            "Account created successfully!"
-        );
+        // 2. Make the HTTP POST request
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Tells the server to expect JSON
+            },
+            body: JSON.stringify(data) // Converts your JS object into a JSON string
+        });
 
-
-        console.log("Name:", name);
-
-        console.log("Email:", email);
+        // 3. Parse and use the server's response
+        const result = await response.json();
+        console.log('Success:', result);
     }
 );

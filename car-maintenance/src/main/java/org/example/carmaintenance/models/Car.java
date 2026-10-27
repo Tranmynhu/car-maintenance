@@ -34,6 +34,8 @@ public class Car {
 
     private String image;
 
+    private String vin;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
