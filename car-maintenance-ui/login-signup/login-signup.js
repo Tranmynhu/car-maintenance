@@ -114,20 +114,31 @@ loginForm.addEventListener(
         }
 
 
-        const result = await login(username, password);
-        console.log('Success:', result);
+        try {
+            const result = await login(username, password);
 
-        if (result.isLoginSuccess) {
-            // go to dashboard
-            window.location.href = "/dashboard/dashboard.html";
-        } else {
-            alert("Username or password is incorrect")
+            if (result.isLoginSuccess) {
+                // set user id to local storage
+                localStorage.setItem("userId", result.userId);
+
+                // go to dashboard
+                goToDashboard();
+            } else {
+                alert("Username or password is incorrect")
+            }
+        } catch (error) {
+            alert("Server error, please turn on server")
         }
+
     }
 );
 
+function goToDashboard() {
+    window.location.href = "/dashboard/dashboard.html";
+}
+
 async function login(username, password) {
-    const url = 'http://localhost:8080/api/user/login';
+    const url = getUserApiUrl('/login');
 
     // 1. Define the data payload you want to send
     const data = {
@@ -191,14 +202,7 @@ signupForm.addEventListener(
             return;
         }
 
-
-        /* Check password length */
-
-        console.log("Name:", username);
-
-        console.log("password:", password);
-
-        const url = 'http://localhost:8080/api/user/signUp';
+        const url = getUserApiUrl('/signUp');
 
         // 1. Define the data payload you want to send
         const data = {
@@ -217,6 +221,15 @@ signupForm.addEventListener(
 
         // 3. Parse and use the server's response
         const result = await response.json();
-        console.log('Success:', result);
+
+        if (result.isSignUpSuccess) {
+            alert("Sign up successful! Please log in.");
+            showLogin();
+        }
     }
 );
+
+function getUserApiUrl(path) {
+    const baseUrl = 'http://localhost:8080/api/user';
+    return baseUrl + path;
+}

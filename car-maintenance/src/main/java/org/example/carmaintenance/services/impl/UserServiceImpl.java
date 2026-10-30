@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
 
          for (User user: users) {
              if (isUserMatched(user, userLoginRequest)) {
-                 return new UserLoginResponse(true, "login succeeded!");
+                 return new UserLoginResponse(true, "login succeeded!", user.getId());
              }
          }
 
-        return new UserLoginResponse(false, "User " + userLoginRequest.username() + " not found");
+        return new UserLoginResponse(false, "User " + userLoginRequest.username() + " not found", -1L);
     }
 
     private boolean isUserMatched(User user, UserLoginRequest userLoginRequest) {

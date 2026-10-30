@@ -279,6 +279,43 @@ body {
     margin-top: 16px;
 }
 
+/* Delete buttons */
+.danger-button {
+    background-color: #d93a3a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.danger-button:hover {
+    background-color: #b82c2c;
+}
+
+.card-delete-button {
+    background-color: #fdecec;
+    color: #d93a3a;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.card-delete-button:hover {
+    background-color: #f9d3d3;
+}
+
+#deleteMessage {
+    color: #536780;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
 /* Add vehicle dialog */
 dialog {
     width: min(440px, calc(100% - 32px));
@@ -297,18 +334,21 @@ dialog h2 {
     margin-bottom: 22px;
 }
 
-#vehicleForm {
+#vehicleForm,
+#editVehicleForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-#vehicleForm label {
+#vehicleForm label,
+#editVehicleForm label {
     font-size: 14px;
     font-weight: bold;
 }
 
-#vehicleForm input {
+#vehicleForm input,
+#editVehicleForm input {
     width: 100%;
     padding: 11px;
     border: 1px solid #d4dfeb;
@@ -317,7 +357,8 @@ dialog h2 {
     margin-bottom: 8px;
 }
 
-#vehicleForm input:focus {
+#vehicleForm input:focus,
+#editVehicleForm input:focus {
     outline: 2px solid #a8ceff;
     border-color: #2874dc;
 }

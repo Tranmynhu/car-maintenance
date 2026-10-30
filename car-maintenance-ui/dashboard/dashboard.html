@@ -136,6 +136,47 @@
         </form>
     </dialog>
 
+    <dialog id="editVehicleDialog">
+        <form id="editVehicleForm">
+            <h2>Edit Vehicle</h2>
+
+            <label for="editVehicleName">Vehicle Name</label>
+            <input id="editVehicleName" type="text" required>
+
+            <label for="editVehicleYear">Year</label>
+            <input id="editVehicleYear" type="number"
+                   min="1886" max="2100" required>
+
+            <label for="editVehicleColor">Color</label>
+            <input id="editVehicleColor" type="text" required>
+
+            <label for="editVehicleVin">VIN</label>
+            <input id="editVehicleVin" type="text" required>
+
+            <div class="dialog-buttons">
+                <button type="button" class="secondary-button"
+                        id="editCancelButton">Cancel</button>
+
+                <button type="submit" class="primary-button">
+                    Update Vehicle
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="deleteDialog">
+        <h2>Delete Vehicle</h2>
+        <p id="deleteMessage"></p>
+
+        <div class="dialog-buttons">
+            <button type="button" class="secondary-button"
+                    id="deleteCancelButton">Cancel</button>
+
+            <button type="button" class="danger-button"
+                    id="deleteConfirmButton">Delete</button>
+        </div>
+    </dialog>
+
     <!-- Connect the JavaScript file -->
     <script src="dashboard.js"></script>
 

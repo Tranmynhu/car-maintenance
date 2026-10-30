@@ -1,3 +1,3 @@
 package org.example.carmaintenance.dtos.responses;
 
-public record UserLoginResponse (boolean isLoginSuccess, String message) { }
+public record UserLoginResponse (boolean isLoginSuccess, String message, Long userId) { }
