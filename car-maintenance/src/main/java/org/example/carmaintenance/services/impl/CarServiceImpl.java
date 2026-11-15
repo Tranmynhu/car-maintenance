@@ -15,6 +15,8 @@ import static org.example.carmaintenance.dtos.mappers.CarMapper.mapFromRequest;
 import static org.example.carmaintenance.dtos.mappers.CarMapper.mapToCarResponse;
 import static org.example.carmaintenance.dtos.mappers.CarMapper.mapToCarResponseList;
 
+// SOLID - Dependency Inversion: the repositories are injected through the constructor,
+// and mapping is delegated to CarMapper (Single Responsibility).
 @Service
 public class CarServiceImpl implements CarService {
 

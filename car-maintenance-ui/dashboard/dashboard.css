@@ -295,6 +295,22 @@ body {
     background-color: #b82c2c;
 }
 
+.card-edit-button {
+    background-color: #eef2f7;
+    color: #34465e;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.card-edit-button:hover {
+    background-color: #dde5ef;
+}
+
 .card-delete-button {
     background-color: #fdecec;
     color: #d93a3a;
@@ -335,20 +351,28 @@ dialog h2 {
 }
 
 #vehicleForm,
-#editVehicleForm {
+#editVehicleForm,
+#appointmentForm,
+#editAppointmentForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
 #vehicleForm label,
-#editVehicleForm label {
+#editVehicleForm label,
+#appointmentForm label,
+#editAppointmentForm label {
     font-size: 14px;
     font-weight: bold;
 }
 
 #vehicleForm input,
-#editVehicleForm input {
+#editVehicleForm input,
+#appointmentForm input,
+#appointmentForm select,
+#editAppointmentForm input,
+#editAppointmentForm select {
     width: 100%;
     padding: 11px;
     border: 1px solid #d4dfeb;
@@ -358,7 +382,11 @@ dialog h2 {
 }
 
 #vehicleForm input:focus,
-#editVehicleForm input:focus {
+#editVehicleForm input:focus,
+#appointmentForm input:focus,
+#appointmentForm select:focus,
+#editAppointmentForm input:focus,
+#editAppointmentForm select:focus {
     outline: 2px solid #a8ceff;
     border-color: #2874dc;
 }

@@ -103,6 +103,20 @@ No sample data needs to be loaded; you create your own. Suggested fictional data
 8. **Per-user lists.** Log out, sign up as a second user, and confirm that user does not see the
    first user's vehicles.
 
+## Running the Tests
+
+The backend has automated JUnit 5 tests (Mockito for mocks, Spring `MockMvc` for controllers). The
+controller and service tests need no database. From the repository root:
+
+```bash
+cd car-maintenance
+./mvnw test -Dtest='*ControllerTest,*ServiceImplTest,*ValidatorTest'
+```
+
+(Windows: `mvnw.cmd test ...`.) Plain `./mvnw test` also runs `CarMaintenanceApplicationTests`, which
+starts the whole app and therefore needs PostgreSQL running. The tests are under
+`car-maintenance/src/test/java`.
+
 ## Known Limitations
 
 - Vehicle lists are filtered by a `userId` sent from the browser (stored in `localStorage`). There

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// SOLID - Dependency Inversion: depends on the CarService interface, not its implementation.
 @RestController
 @RequestMapping("/api/car")
 public class CarController {
