@@ -254,8 +254,8 @@ function handleNavigation(event) {
     // Perform the action for the selected page
     if (selectedPage === "Dashboard") {
         statusMessage.textContent = "Welcome to your dashboard.";
-    } else if (selectedPage === "Add Vehicle") {
-        openVehicleForm();
+    } else if (selectedPage === "Appointments" || selectedPage === "Service History") {
+        goToPage(selectedPage);
     } else {
         statusMessage.textContent =
             selectedPage + " page is not implemented yet.";
@@ -287,8 +287,7 @@ navigationItems.forEach(function (item) {
 
 /* View all appointments */
 document.getElementById("viewAllButton").addEventListener("click", function () {
-    statusMessage.textContent =
-        "You have one upcoming appointment: Oil Change.";
+    goToPage("Appointments");
 });
 
 /* Log out button */
@@ -303,5 +302,6 @@ document.querySelector(".profile-button").addEventListener("click", function () 
     statusMessage.textContent = "Welcome, My Nhu! Profile settings are not implemented yet.";
 });
 
-/* Display the initial vehicle cards */
+/* Display the initial vehicle and appointment cards */
 displayVehicles();
+renderAppointments(document.getElementById("appointmentList"));
