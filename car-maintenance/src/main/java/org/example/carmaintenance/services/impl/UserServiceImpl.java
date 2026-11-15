@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// SOLID - Dependency Inversion: the repository is injected through the constructor
+// instead of being created here.
 @Service
 public class UserServiceImpl implements UserService {
 

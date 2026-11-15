@@ -6,6 +6,7 @@ import org.example.carmaintenance.models.Car;
 
 import java.util.List;
 
+// SOLID - Single Responsibility: this class only converts between cars and DTOs.
 public class CarMapper {
     public static Car mapFromRequest(CarRequest carRequest) {
         Car car = new Car();

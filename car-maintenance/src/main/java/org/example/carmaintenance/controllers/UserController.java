@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// SOLID - Dependency Inversion: depends on the UserService interface, not its implementation.
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

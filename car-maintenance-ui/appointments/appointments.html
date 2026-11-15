@@ -47,6 +47,9 @@
             <section class="section appointments-section">
                 <div class="section-header">
                     <h2>Upcoming Appointments</h2>
+                    <button class="primary-button" id="scheduleButton">
+                        + Schedule Appointment
+                    </button>
                 </div>
 
                 <div id="appointmentList"></div>
@@ -56,6 +59,68 @@
                aria-live="polite"></p>
         </main>
     </div>
+
+    <dialog id="appointmentDialog">
+        <form id="appointmentForm">
+            <h2>Schedule an Appointment</h2>
+
+            <label for="appointmentVehicle">Vehicle</label>
+            <select id="appointmentVehicle" required></select>
+
+            <label for="appointmentDate">Date</label>
+            <input id="appointmentDate" type="date" required>
+
+            <label for="appointmentDescription">Service Description</label>
+            <input id="appointmentDescription" type="text"
+                   placeholder="e.g. Oil change and tire rotation" required>
+
+            <div class="dialog-buttons">
+                <button type="button" class="secondary-button"
+                        id="appointmentCancelButton">Cancel</button>
+
+                <button type="submit" class="primary-button">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="editAppointmentDialog">
+        <form id="editAppointmentForm">
+            <h2>Edit Appointment</h2>
+
+            <label for="editAppointmentVehicle">Vehicle</label>
+            <select id="editAppointmentVehicle" required></select>
+
+            <label for="editAppointmentDate">Date</label>
+            <input id="editAppointmentDate" type="date" required>
+
+            <label for="editAppointmentDescription">Service Description</label>
+            <input id="editAppointmentDescription" type="text" required>
+
+            <div class="dialog-buttons">
+                <button type="button" class="secondary-button"
+                        id="editAppointmentCancelButton">Cancel</button>
+
+                <button type="submit" class="primary-button">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="deleteAppointmentDialog">
+        <h2>Delete Appointment</h2>
+        <p id="deleteAppointmentMessage"></p>
+
+        <div class="dialog-buttons">
+            <button type="button" class="secondary-button"
+                    id="deleteAppointmentCancelButton">Cancel</button>
+
+            <button type="button" class="danger-button"
+                    id="deleteAppointmentConfirmButton">Delete</button>
+        </div>
+    </dialog>
 
     <script src="/shared/appointments-data.js"></script>
     <script src="appointments.js"></script>
