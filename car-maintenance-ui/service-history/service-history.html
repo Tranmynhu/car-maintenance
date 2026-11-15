@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service History - Car Maintenance Tracker</title>
+
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🚘</span>
+                <h2>Car Maintenance Tracker</h2>
+            </div>
+
+            <nav class="navigation">
+                <button class="nav-item" data-page="Dashboard">
+                    <span>⌂</span> Dashboard
+                </button>
+
+                <button class="nav-item active" data-page="Service History">
+                    <span>▤</span> Service History
+                </button>
+
+                <button class="nav-item" data-page="Appointments">
+                    <span>▦</span> Appointments
+                </button>
+            </nav>
+
+            <button class="logout-button" id="logoutButton">
+                ⇥ Log Out
+            </button>
+        </aside>
+
+        <main class="main-content">
+            <header class="welcome-header">
+                <div>
+                    <h1>Service History</h1>
+                    <p>Past maintenance done on your vehicles.</p>
+                </div>
+            </header>
+
+            <section class="section appointments-section">
+                <div class="section-header">
+                    <h2>Past Services</h2>
+                </div>
+
+                <div id="serviceHistoryList"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/shared/appointments-data.js"></script>
+    <script src="service-history.js"></script>
+
+</body>
+</html>

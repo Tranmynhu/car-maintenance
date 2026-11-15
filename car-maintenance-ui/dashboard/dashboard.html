@@ -25,20 +25,12 @@
                     <span>⌂</span> Dashboard
                 </button>
 
-                <button class="nav-item" data-page="Add Vehicle">
-                    <span>🚗</span> Add Vehicle
-                </button>
-
                 <button class="nav-item" data-page="Service History">
                     <span>▤</span> Service History
                 </button>
 
                 <button class="nav-item" data-page="Appointments">
                     <span>▦</span> Appointments
-                </button>
-
-                <button class="nav-item" data-page="Settings">
-                    <span>⚙</span> Settings
                 </button>
             </nav>
 
@@ -84,17 +76,7 @@
                     </button>
                 </div>
 
-                <div class="appointment-card">
-                    <div class="appointment-icon">▦</div>
-
-                    <div class="appointment-details">
-                        <h3>Oil Change</h3>
-                        <p>Apr 30, 2026 · 10:00 AM</p>
-                        <p>Toyota Service Center</p>
-                    </div>
-
-                    <span class="arrow">›</span>
-                </div>
+                <div id="appointmentList"></div>
             </section>
 
             <p class="status-message" id="statusMessage"
@@ -178,6 +160,7 @@
     </dialog>
 
     <!-- Connect the JavaScript file -->
+    <script src="/shared/appointments-data.js"></script>
     <script src="dashboard.js"></script>
 
 </body>
