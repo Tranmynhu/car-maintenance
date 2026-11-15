@@ -7,8 +7,6 @@ import org.example.carmaintenance.models.User;
 import org.example.carmaintenance.repositories.CarRepository;
 import org.example.carmaintenance.repositories.UserRepository;
 import org.example.carmaintenance.services.CarService;
-import org.example.carmaintenance.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
