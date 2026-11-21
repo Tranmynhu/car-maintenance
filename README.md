@@ -108,14 +108,10 @@ No sample data needs to be loaded; you create your own. Suggested fictional data
 The backend has automated JUnit 5 tests (Mockito for mocks, Spring `MockMvc` for controllers). The
 controller and service tests need no database. From the repository root:
 
-```bash
+```cmd
 cd car-maintenance
-./mvnw test -Dtest='*ControllerTest,*ServiceImplTest,*ValidatorTest'
+mvn test
 ```
-
-(Windows: `mvnw.cmd test ...`.) Plain `./mvnw test` also runs `CarMaintenanceApplicationTests`, which
-starts the whole app and therefore needs PostgreSQL running. The tests are under
-`car-maintenance/src/test/java`.
 
 ## Known Limitations
 
