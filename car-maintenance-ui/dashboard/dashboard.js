@@ -9,7 +9,6 @@ const vehicleDialog = document.getElementById("vehicleDialog");
 const vehicleForm = document.getElementById("vehicleForm");
 const cancelButton = document.getElementById("cancelButton");
 const statusMessage = document.getElementById("statusMessage");
-const navigationItems = document.querySelectorAll(".nav-item");
 const editVehicleDialog = document.getElementById("editVehicleDialog");
 const editVehicleForm = document.getElementById("editVehicleForm");
 let editingVehicleId = null;
@@ -17,15 +16,20 @@ const deleteDialog = document.getElementById("deleteDialog");
 let deletingVehicle = null;
 
 /* Display all vehicles on the page */
-async function displayVehicles() {
+function displayVehicles() {
     // Load the vehicles from the server
-    try {
-        vehicles = await getAllVehicles();
-    } catch (error) {
-        statusMessage.textContent = "Could not load vehicles.";
-        return;
-    }
+    return attempt(getAllVehicles()).then(function ({ data, error }) {
+        if (error) {
+            statusMessage.textContent = "Could not load vehicles.";
+            return;
+        }
 
+        vehicles = data;
+        renderVehicleCards();
+    });
+}
+
+function renderVehicleCards() {
     // Remove the old vehicle cards
     vehicleList.replaceChildren();
 
@@ -100,7 +104,7 @@ function closeVehicleForm() {
 }
 
 /* Save a new vehicle */
-async function saveVehicle(event) {
+function saveVehicle(event) {
     // Prevent the browser from refreshing the page
     event.preventDefault();
 
@@ -135,31 +139,25 @@ async function saveVehicle(event) {
         icon: "🚗"
     };
 
-    await addVehicle(newVehicle);
+    return attempt(addVehicle(newVehicle))
+        .then(function ({ error }) {
+            if (error) {
+                statusMessage.textContent = "Could not add the vehicle.";
+                return;
+            }
 
-    // Refresh the vehicle cards from the server
-    await displayVehicles();
-
-    // Close the form and show a confirmation
-    closeVehicleForm();
-    statusMessage.textContent =
-        newVehicle.name + " was added successfully.";
+            // Refresh the vehicle cards from the server
+            return displayVehicles().then(function () {
+                // Close the form and show a confirmation
+                closeVehicleForm();
+                statusMessage.textContent =
+                    newVehicle.name + " was added successfully.";
+            });
+        });
 }
 
-async function addVehicle(data) {
-    const url = 'http://localhost:8080/api/car';
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' // Tells the server to expect JSON
-        },
-        body: JSON.stringify(data) // Converts your JS object into a JSON string
-    });
-
-    const result = await response.json();
-
-    return result;
+function addVehicle(data) {
+    return api.post(CAR_URL, data);
 }
 
 /* Open the Edit Vehicle form filled with the vehicle's current values */
@@ -173,7 +171,7 @@ function openEditForm(vehicle) {
 }
 
 /* Save the edited vehicle */
-async function updateVehicle(event) {
+function updateVehicle(event) {
     event.preventDefault();
 
     const updatedVehicle = {
@@ -185,19 +183,19 @@ async function updateVehicle(event) {
         userId: localStorage.getItem("userId")
     };
 
-    await fetch('http://localhost:8080/api/car', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedVehicle)
-    });
+    return attempt(api.put(CAR_URL, updatedVehicle))
+        .then(function ({ error }) {
+            if (error) {
+                statusMessage.textContent = "Could not update the vehicle.";
+                return;
+            }
 
-    await displayVehicles();
-
-    editVehicleDialog.close();
-    statusMessage.textContent =
-        updatedVehicle.name + " was updated successfully.";
+            return displayVehicles().then(function () {
+                editVehicleDialog.close();
+                statusMessage.textContent =
+                    updatedVehicle.name + " was updated successfully.";
+            });
+        });
 }
 
 /* Ask for confirmation before deleting a vehicle */
@@ -209,57 +207,30 @@ function openDeleteDialog(vehicle) {
 }
 
 /* Delete the confirmed vehicle */
-async function deleteVehicle() {
-    await fetch('http://localhost:8080/api/car?id=' + deletingVehicle.id, {
-        method: 'DELETE'
-    });
+function deleteVehicle() {
+    return attempt(api.delete(CAR_URL, { id: deletingVehicle.id }))
+        .then(function ({ error }) {
+            if (error) {
+                deleteDialog.close();
+                statusMessage.textContent = "Could not delete the vehicle.";
+                return;
+            }
 
-    await displayVehicles();
-
-    deleteDialog.close();
-    statusMessage.textContent = deletingVehicle.name + " was deleted.";
+            return displayVehicles().then(function () {
+                deleteDialog.close();
+                statusMessage.textContent = deletingVehicle.name + " was deleted.";
+            });
+        });
 }
 
-async function getAllVehicles() {
-    const userId = localStorage.getItem("userId");
-    const url = 'http://localhost:8080/api/car?userId=' + encodeURIComponent(userId);
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error("Failed to load vehicles: " + response.status);
-    }
-
-    const cars = await response.json();
-
-    // The server does not send an icon, so use a default one
-    return cars.map(function (car) {
-        return { ...car, icon: "🚗" };
-    });
-}
-
-/* Handle sidebar navigation */
-function handleNavigation(event) {
-    const selectedItem = event.currentTarget;
-    const selectedPage = selectedItem.dataset.page;
-
-    // Remove the active style from every navigation button
-    navigationItems.forEach(function (item) {
-        item.classList.remove("active");
-    });
-
-    // Highlight the selected navigation button
-    selectedItem.classList.add("active");
-
-    // Perform the action for the selected page
-    if (selectedPage === "Dashboard") {
-        statusMessage.textContent = "Welcome to your dashboard.";
-    } else if (selectedPage === "Appointments" || selectedPage === "Service History") {
-        goToPage(selectedPage);
-    } else {
-        statusMessage.textContent =
-            selectedPage + " page is not implemented yet.";
-    }
+function getAllVehicles() {
+    return api.get(CAR_URL, { userId: localStorage.getItem("userId") })
+        .then(function (cars) {
+            // The server does not send an icon, so use a default one
+            return cars.map(function (car) {
+                return { ...car, icon: "🚗" };
+            });
+        });
 }
 
 /* Button event listeners */
@@ -281,20 +252,9 @@ document.getElementById("editCancelButton").addEventListener("click", function (
     editVehicleDialog.close();
 });
 
-navigationItems.forEach(function (item) {
-    item.addEventListener("click", handleNavigation);
-});
-
 /* View all appointments */
 document.getElementById("viewAllButton").addEventListener("click", function () {
     goToPage("Appointments");
-});
-
-/* Log out button */
-document.getElementById("logoutButton").addEventListener("click", function () {
-    statusMessage.textContent =
-        "You have been logged out of the demo dashboard.";
-    window.location.href = "/login-signup/login-signup.html";
 });
 
 /* Profile button */
