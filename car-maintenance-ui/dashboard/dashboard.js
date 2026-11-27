@@ -216,7 +216,8 @@ function deleteVehicle() {
                 return;
             }
 
-            return displayVehicles().then(function () {
+            // The car's appointments were deleted with it, so refresh them too
+            return Promise.all([displayVehicles(), displayAppointments()]).then(function () {
                 deleteDialog.close();
                 statusMessage.textContent = deletingVehicle.name + " was deleted.";
             });
@@ -262,6 +263,10 @@ document.querySelector(".profile-button").addEventListener("click", function () 
     statusMessage.textContent = "Welcome, My Nhu! Profile settings are not implemented yet.";
 });
 
+function displayAppointments() {
+    return renderAppointments(document.getElementById("appointmentList"));
+}
+
 /* Display the initial vehicle and appointment cards */
 displayVehicles();
-renderAppointments(document.getElementById("appointmentList"));
+displayAppointments();
