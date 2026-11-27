@@ -87,7 +87,7 @@ function togglePassword(inputId, button) {
 
 loginForm.addEventListener(
     "submit",
-    async function (event) {
+    function (event) {
 
         event.preventDefault();
 
@@ -114,8 +114,11 @@ loginForm.addEventListener(
         }
 
 
-        try {
-            const result = await login(username, password);
+        return attempt(login(username, password)).then(function ({ data: result, error }) {
+            if (error) {
+                alert("Server error, please turn on server");
+                return;
+            }
 
             if (result.isLoginSuccess) {
                 // set user id to local storage
@@ -126,9 +129,7 @@ loginForm.addEventListener(
             } else {
                 alert("Username or password is incorrect")
             }
-        } catch (error) {
-            alert("Server error, please turn on server")
-        }
+        });
 
     }
 );
@@ -137,28 +138,8 @@ function goToDashboard() {
     window.location.href = "/dashboard/dashboard.html";
 }
 
-async function login(username, password) {
-    const url = getUserApiUrl('/login');
-
-    // 1. Define the data payload you want to send
-    const data = {
-        username,
-        password
-    };
-
-    // 2. Make the HTTP POST request
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' // Tells the server to expect JSON
-        },
-        body: JSON.stringify(data) // Converts your JS object into a JSON string
-    });
-
-    // 3. Parse and use the server's response
-    const result = await response.json();
-
-    return result;
+function login(username, password) {
+    return api.post(getUserApiUrl('/login'), { username, password });
 }
 
 
@@ -168,7 +149,7 @@ async function login(username, password) {
 
 signupForm.addEventListener(
     "submit",
-    async function (event) {
+    function (event) {
 
         event.preventDefault();
 
@@ -202,34 +183,22 @@ signupForm.addEventListener(
             return;
         }
 
-        const url = getUserApiUrl('/signUp');
+        return attempt(
+            api.post(getUserApiUrl('/signUp'), { username, password })
+        ).then(function ({ data: result, error }) {
+            if (error) {
+                alert("Server error, please turn on server");
+                return;
+            }
 
-        // 1. Define the data payload you want to send
-        const data = {
-            username,
-            password
-        };
-
-        // 2. Make the HTTP POST request
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json' // Tells the server to expect JSON
-            },
-            body: JSON.stringify(data) // Converts your JS object into a JSON string
+            if (result.isSignUpSuccess) {
+                alert("Sign up successful! Please log in.");
+                showLogin();
+            }
         });
-
-        // 3. Parse and use the server's response
-        const result = await response.json();
-
-        if (result.isSignUpSuccess) {
-            alert("Sign up successful! Please log in.");
-            showLogin();
-        }
     }
 );
 
 function getUserApiUrl(path) {
-    const baseUrl = 'http://localhost:8080/api/user';
-    return baseUrl + path;
+    return USER_URL + path;
 }

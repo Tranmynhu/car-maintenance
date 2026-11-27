@@ -1,14 +1,5 @@
-const APPOINTMENT_URL = "http://localhost:8080/api/appointment";
-
-async function getAllAppointments() {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch(APPOINTMENT_URL + "?userId=" + encodeURIComponent(userId));
-
-    if (!response.ok) {
-        throw new Error("Failed to load appointments: " + response.status);
-    }
-
-    return await response.json();
+function getAllAppointments() {
+    return api.get(APPOINTMENT_URL, { userId: localStorage.getItem("userId") });
 }
 
 function formatAppointmentDate(isoDate) {
@@ -22,16 +13,18 @@ function formatAppointmentDate(isoDate) {
     });
 }
 
-async function renderAppointments(container, onEdit, onDelete) {
-    let appointments;
+function renderAppointments(container, onEdit, onDelete) {
+    return attempt(getAllAppointments()).then(function ({ data, error }) {
+        if (error) {
+            container.textContent = "Could not load appointments.";
+            return;
+        }
 
-    try {
-        appointments = await getAllAppointments();
-    } catch (error) {
-        container.textContent = "Could not load appointments.";
-        return;
-    }
+        renderAppointmentCards(container, data, onEdit, onDelete);
+    });
+}
 
+function renderAppointmentCards(container, appointments, onEdit, onDelete) {
     container.replaceChildren();
 
     if (appointments.length === 0) {
@@ -84,14 +77,4 @@ async function renderAppointments(container, onEdit, onDelete) {
 
         container.appendChild(card);
     });
-}
-
-function goToPage(pageName) {
-    if (pageName === "Dashboard") {
-        window.location.href = "/dashboard/dashboard.html";
-    } else if (pageName === "Service History") {
-        window.location.href = "/service-history/service-history.html";
-    } else if (pageName === "Appointments") {
-        window.location.href = "/appointments/appointments.html";
-    }
 }

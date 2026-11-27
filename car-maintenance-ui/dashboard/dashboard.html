@@ -14,30 +14,7 @@
     <div class="dashboard">
 
         <!-- Left Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <span class="logo-icon">🚘</span>
-                <h2>Car Maintenance Tracker</h2>
-            </div>
-
-            <nav class="navigation">
-                <button class="nav-item active" data-page="Dashboard">
-                    <span>⌂</span> Dashboard
-                </button>
-
-                <button class="nav-item" data-page="Service History">
-                    <span>▤</span> Service History
-                </button>
-
-                <button class="nav-item" data-page="Appointments">
-                    <span>▦</span> Appointments
-                </button>
-            </nav>
-
-            <button class="logout-button" id="logoutButton">
-                ⇥ Log Out
-            </button>
-        </aside>
+        <app-sidebar active="Dashboard"></app-sidebar>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -160,6 +137,9 @@
     </dialog>
 
     <!-- Connect the JavaScript file -->
+    <script src="/shared/config.js"></script>
+    <script src="/shared/api.js"></script>
+    <script src="/shared/sidebar.js"></script>
     <script src="/shared/appointments-data.js"></script>
     <script src="dashboard.js"></script>
 

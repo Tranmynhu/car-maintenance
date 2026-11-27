@@ -1,25 +1,21 @@
-const SERVICE_HISTORY_URL = "http://localhost:8080/api/service-history";
-const CAR_URL = "http://localhost:8080/api/car";
-
-async function getAllVehicles() {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch(CAR_URL + "?userId=" + encodeURIComponent(userId));
-
-    if (!response.ok) {
-        throw new Error("Failed to load vehicles: " + response.status);
-    }
-
-    return await response.json();
+function getAllVehicles() {
+    return api.get(CAR_URL, { userId: localStorage.getItem("userId") });
 }
 
-async function getServiceHistory(carId) {
-    const response = await fetch(SERVICE_HISTORY_URL + "?carId=" + encodeURIComponent(carId));
+function getServiceHistory(carId) {
+    return api.get(SERVICE_HISTORY_URL, { carId });
+}
 
-    if (!response.ok) {
-        throw new Error("Failed to load service history: " + response.status);
-    }
+// Service history of every vehicle, each entry tagged with its vehicle's name
+function getAllServices() {
+    return getAllVehicles()
+        .then(cars => Promise.all(cars.map(withServices)))
+        .then(histories => histories.flat());
+}
 
-    return await response.json();
+function withServices(car) {
+    return getServiceHistory(car.id)
+        .then(history => history.map(service => ({ ...service, carName: car.name })));
 }
 
 function showMessage(container, text) {
@@ -28,24 +24,18 @@ function showMessage(container, text) {
     container.replaceChildren(message);
 }
 
-async function renderServiceHistory(container) {
-    let services;
+function renderServiceHistory(container) {
+    return attempt(getAllServices()).then(function ({ data, error }) {
+        if (error) {
+            showMessage(container, "Could not load service history.");
+            return;
+        }
 
-    try {
-        const cars = await getAllVehicles();
-        const histories = await Promise.all(cars.map(function (car) {
-            return getServiceHistory(car.id).then(function (history) {
-                return history.map(function (service) {
-                    return { ...service, carName: car.name };
-                });
-            });
-        }));
-        services = histories.flat();
-    } catch (error) {
-        showMessage(container, "Could not load service history.");
-        return;
-    }
+        renderServiceCards(container, data);
+    });
+}
 
+function renderServiceCards(container, services) {
     if (services.length === 0) {
         showMessage(container, "No service history yet.");
         return;
@@ -83,15 +73,5 @@ async function renderServiceHistory(container) {
         container.appendChild(card);
     });
 }
-
-document.querySelectorAll(".nav-item").forEach(function (item) {
-    item.addEventListener("click", function () {
-        goToPage(item.dataset.page);
-    });
-});
-
-document.getElementById("logoutButton").addEventListener("click", function () {
-    window.location.href = "/login-signup/login-signup.html";
-});
 
 renderServiceHistory(document.getElementById("serviceHistoryList"));

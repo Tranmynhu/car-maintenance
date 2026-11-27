@@ -19,46 +19,45 @@ function showAppointments() {
     );
 }
 
-async function loadVehicles(select) {
-    const userId = localStorage.getItem("userId");
+// Fills the select with the user's vehicles; resolves to false if it could not
+function loadVehicles(select) {
+    return attempt(
+        api.get(CAR_URL, { userId: localStorage.getItem("userId") })
+    ).then(function ({ data: cars, error }) {
+        if (error) {
+            statusMessage.textContent = "Could not load vehicles.";
+            return false;
+        }
 
-    let cars;
-    try {
-        const response = await fetch(
-            "http://localhost:8080/api/car?userId=" + encodeURIComponent(userId)
-        );
-        cars = await response.json();
-    } catch (error) {
-        statusMessage.textContent = "Could not load vehicles.";
-        return false;
-    }
+        if (cars.length === 0) {
+            statusMessage.textContent = "Please add a vehicle before scheduling an appointment.";
+            return false;
+        }
 
-    if (cars.length === 0) {
-        statusMessage.textContent = "Please add a vehicle before scheduling an appointment.";
-        return false;
-    }
+        select.replaceChildren();
+        cars.forEach(function (car) {
+            const option = document.createElement("option");
+            option.value = car.id;
+            option.textContent = car.name + " (" + car.year + ")";
+            select.appendChild(option);
+        });
 
-    select.replaceChildren();
-    cars.forEach(function (car) {
-        const option = document.createElement("option");
-        option.value = car.id;
-        option.textContent = car.name + " (" + car.year + ")";
-        select.appendChild(option);
+        return true;
     });
-
-    return true;
 }
 
-async function openAppointmentForm() {
-    if (!(await loadVehicles(appointmentVehicle))) {
-        return;
-    }
+function openAppointmentForm() {
+    return loadVehicles(appointmentVehicle).then(function (loaded) {
+        if (!loaded) {
+            return;
+        }
 
-    appointmentForm.reset();
-    appointmentDialog.showModal();
+        appointmentForm.reset();
+        appointmentDialog.showModal();
+    });
 }
 
-async function saveAppointment(event) {
+function saveAppointment(event) {
     event.preventDefault();
 
     const newAppointment = {
@@ -67,38 +66,35 @@ async function saveAppointment(event) {
         description: document.getElementById("appointmentDescription").value.trim()
     };
 
-    const response = await fetch(APPOINTMENT_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newAppointment)
+    return attempt(api.post(APPOINTMENT_URL, newAppointment))
+        .then(function ({ error }) {
+            if (error) {
+                statusMessage.textContent = "Could not save the appointment.";
+                return;
+            }
+
+            return showAppointments().then(function () {
+                appointmentDialog.close();
+                statusMessage.textContent = "Appointment was scheduled successfully.";
+            });
+        });
+}
+
+function openEditAppointmentForm(appointment) {
+    return loadVehicles(editAppointmentVehicle).then(function (loaded) {
+        if (!loaded) {
+            return;
+        }
+
+        editingAppointmentId = appointment.id;
+        editAppointmentVehicle.value = appointment.carId;
+        document.getElementById("editAppointmentDate").value = appointment.date;
+        document.getElementById("editAppointmentDescription").value = appointment.description || "";
+        editAppointmentDialog.showModal();
     });
-
-    if (!response.ok) {
-        statusMessage.textContent = "Could not save the appointment.";
-        return;
-    }
-
-    await showAppointments();
-
-    appointmentDialog.close();
-    statusMessage.textContent = "Appointment was scheduled successfully.";
 }
 
-async function openEditAppointmentForm(appointment) {
-    if (!(await loadVehicles(editAppointmentVehicle))) {
-        return;
-    }
-
-    editingAppointmentId = appointment.id;
-    editAppointmentVehicle.value = appointment.carId;
-    document.getElementById("editAppointmentDate").value = appointment.date;
-    document.getElementById("editAppointmentDescription").value = appointment.description || "";
-    editAppointmentDialog.showModal();
-}
-
-async function updateAppointment(event) {
+function updateAppointment(event) {
     event.preventDefault();
 
     const updatedAppointment = {
@@ -108,23 +104,18 @@ async function updateAppointment(event) {
         description: document.getElementById("editAppointmentDescription").value.trim()
     };
 
-    const response = await fetch(APPOINTMENT_URL, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedAppointment)
-    });
+    return attempt(api.put(APPOINTMENT_URL, updatedAppointment))
+        .then(function ({ error }) {
+            if (error) {
+                statusMessage.textContent = "Could not update the appointment.";
+                return;
+            }
 
-    if (!response.ok) {
-        statusMessage.textContent = "Could not update the appointment.";
-        return;
-    }
-
-    await showAppointments();
-
-    editAppointmentDialog.close();
-    statusMessage.textContent = "Appointment was updated successfully.";
+            return showAppointments().then(function () {
+                editAppointmentDialog.close();
+                statusMessage.textContent = "Appointment was updated successfully.";
+            });
+        });
 }
 
 function openDeleteAppointmentDialog(appointment) {
@@ -134,20 +125,20 @@ function openDeleteAppointmentDialog(appointment) {
     deleteAppointmentDialog.showModal();
 }
 
-async function deleteAppointment() {
-    const response = await fetch(APPOINTMENT_URL + "?id=" + deletingAppointment.id, {
-        method: "DELETE"
-    });
+function deleteAppointment() {
+    return attempt(api.delete(APPOINTMENT_URL, { id: deletingAppointment.id }))
+        .then(function ({ error }) {
+            deleteAppointmentDialog.close();
 
-    deleteAppointmentDialog.close();
+            if (error) {
+                statusMessage.textContent = "Could not delete the appointment.";
+                return;
+            }
 
-    if (!response.ok) {
-        statusMessage.textContent = "Could not delete the appointment.";
-        return;
-    }
-
-    await showAppointments();
-    statusMessage.textContent = "Appointment was deleted.";
+            return showAppointments().then(function () {
+                statusMessage.textContent = "Appointment was deleted.";
+            });
+        });
 }
 
 document.getElementById("deleteAppointmentConfirmButton").addEventListener("click", deleteAppointment);
@@ -169,15 +160,5 @@ document.getElementById("editAppointmentCancelButton").addEventListener("click",
 appointmentForm.addEventListener("submit", saveAppointment);
 
 editAppointmentForm.addEventListener("submit", updateAppointment);
-
-document.querySelectorAll(".nav-item").forEach(function (item) {
-    item.addEventListener("click", function () {
-        goToPage(item.dataset.page);
-    });
-});
-
-document.getElementById("logoutButton").addEventListener("click", function () {
-    window.location.href = "/login-signup/login-signup.html";
-});
 
 showAppointments();
