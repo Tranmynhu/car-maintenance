@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findByCarUserIdOrderByDateAsc(long userId);
+
+    void deleteByCarId(long carId);
 }

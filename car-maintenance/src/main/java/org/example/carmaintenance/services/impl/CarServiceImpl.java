@@ -4,10 +4,12 @@ import org.example.carmaintenance.dtos.requests.CarRequest;
 import org.example.carmaintenance.dtos.requests.CarResponse;
 import org.example.carmaintenance.models.Car;
 import org.example.carmaintenance.models.User;
+import org.example.carmaintenance.repositories.AppointmentRepository;
 import org.example.carmaintenance.repositories.CarRepository;
 import org.example.carmaintenance.repositories.UserRepository;
 import org.example.carmaintenance.services.CarService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,11 +24,14 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final UserRepository userRepository;
+    private final AppointmentRepository appointmentRepository;
 
     public CarServiceImpl(CarRepository carRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          AppointmentRepository appointmentRepository) {
         this.carRepository = carRepository;
         this.userRepository = userRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     @Override
@@ -48,8 +53,12 @@ public class CarServiceImpl implements CarService {
         return mapToCarResponseList(cars);
     }
 
+    // The appointments reference the car through a foreign key, so they must go first,
+    // and both deletes must succeed or fail together.
     @Override
+    @Transactional
     public void deleteCar(long id) {
+        appointmentRepository.deleteByCarId(id);
         carRepository.deleteById(id);
     }
 

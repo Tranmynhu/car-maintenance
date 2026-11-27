@@ -4,11 +4,13 @@ import org.example.carmaintenance.dtos.requests.CarRequest;
 import org.example.carmaintenance.dtos.requests.CarResponse;
 import org.example.carmaintenance.models.Car;
 import org.example.carmaintenance.models.User;
+import org.example.carmaintenance.repositories.AppointmentRepository;
 import org.example.carmaintenance.repositories.CarRepository;
 import org.example.carmaintenance.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,6 +35,9 @@ public class CarServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private AppointmentRepository appointmentRepository;
 
     @InjectMocks
     private CarServiceImpl carService;
@@ -83,10 +89,12 @@ public class CarServiceImplTest {
     }
 
     @Test
-    void deleteCar_deletesById() {
+    void deleteCar_deletesAppointmentsBeforeCar() {
         carService.deleteCar(1L);
 
-        verify(carRepository).deleteById(1L);
+        InOrder inOrder = inOrder(appointmentRepository, carRepository);
+        inOrder.verify(appointmentRepository).deleteByCarId(1L);
+        inOrder.verify(carRepository).deleteById(1L);
     }
 
     @Test
